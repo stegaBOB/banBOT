@@ -49,9 +49,9 @@ function purgeNoRole(message){
                 });
                 i++;
             }
-            console.log("Kicked " + i + " members.");
-            message.channel.send("Kicked " + i + " members.");
         });
+        message.channel.send("Kicked " + i + " members.");
+        console.log("Kicked " + i + " members.");
     })
     .catch(console.error);
 }
