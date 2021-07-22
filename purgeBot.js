@@ -42,7 +42,6 @@ function purgeNoRole(message){
     message.guild.members.fetch()
     .then(members=>{
         members.each(member=>{
-            console.log(member.roles.cache.size);
             if(member.roles.cache.size < 2){
                 member.kick("Member has no roles. Authentication has not been completed.")
                 .catch(() => {
@@ -57,11 +56,11 @@ function purgeNoRole(message){
 }
 
 function countPurge(message){
+    console.log("COUNTING");
     let i = 0;
     message.guild.members.fetch()
     .then(members=>{
         members.each(member=>{
-            console.log(member.roles.cache.size);
             if(member.roles.cache.size < 2){
                 i++;
             }
