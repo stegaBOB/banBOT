@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
 require('dotenv').config();
-const token = process.env.BOT_TOKEN;
-
+const client = new Discord.Client();
 client.on('ready', () => {
     console.log("I am ready!");
 });
@@ -22,8 +20,9 @@ client.on('message', message => {
 
 
 function getConfirmation(message, prompt) {
-    message.reply(prompt+"\nConfirm with a thumb up or deny with a thumb down.");
-    message.react('👍').then(r => {
+    message.reply(prompt+"\nConfirm with a thumb up or deny with a thumb down.")
+    .then();
+    react('👍').then(r => {
         message.react('👎');
     });
     message.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
@@ -41,4 +40,4 @@ function getConfirmation(message, prompt) {
 }
 
 
-client.login(token);
+client.login(process.env.BOT_TOKEN);
