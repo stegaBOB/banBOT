@@ -6,6 +6,6 @@ This bot has a singular goal: to PURGE all members without a role.
 
 - `%purgenorole`: Kicks all members from the server that don't have a role. (Administrator Only)
 
-- `%countpurge`: Gets a count of how many members would be purged if %purgenorole is run. (Moderator or Administrator Only)
+- `%countpurge`: Gets a count of how many members don't have a role after the @everyone role. (Moderator or Administrator Only)
 
-- `%countonlyusers` or `%countusers`: Gets a count of how many members have only one role in after the @everyone role. (Moderator or Administrator Only)
+- `%countonlyusers` or `%countusers`: Gets a count of how many members have only one role after the @everyone role. (Moderator or Administrator Only)
