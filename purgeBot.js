@@ -38,9 +38,9 @@ client.on('message', message => {
 
 function purgeNoRole(message){
     console.log("PURGING");
-    let i = 0;
     message.guild.members.fetch()
     .then(members=>{
+        let i = 0;
         members.each(member=>{
             if(member.roles.cache.size < 2){
                 member.kick("Member has no roles. Authentication has not been completed.")
@@ -49,24 +49,26 @@ function purgeNoRole(message){
                 });
                 i++;
             }
+            console.log("Kicked " + i + " members.");
+            message.channel.send("Kicked " + i + " members.");
         });
-        console.log("Kicked " + i + " members.");
     })
     .catch(console.error);
 }
 
 function countPurge(message){
     console.log("COUNTING");
-    let i = 0;
     message.guild.members.fetch()
     .then(members=>{
+        let i = 0;
         members.each(member=>{
             if(member.roles.cache.size < 2){
                 i++;
             }
         });
+        console.log("There are " + i + " members without a role.");
+        message.channel.send("There are " + i + " members without a role.");
     });
-    console.log("There are " + i + " members without a role.");
 }
 
 client.login(process.env.BOT_TOKEN);
