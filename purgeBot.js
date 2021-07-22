@@ -1,8 +1,10 @@
 /**
- * If you want to start up a purgeBOT on your own, add a .env file that contains
- * `BOT_TOKEN="YOUR BOT TOKEN HERE"` or just replace the process.env.BOT_TOKEN in client.login
- * with your token. Also, make sure to enable "SERVER MEMBERS INTENT" under the "Privileged Gateway Intents" 
- * section in the Bot category on the Discord bot page.
+ * @author Sammy (stegaBOB)
+ * 
+ * @dev If you want to start up a purgeBOT on your own, add a .env file that contains
+ *      `BOT_TOKEN="YOUR BOT TOKEN HERE"` or just replace the process.env.BOT_TOKEN 
+ *      in client.login with your token. Also, make sure to enable "SERVER MEMBERS INTENT" 
+ *      under the "Privileged Gateway Intents" section in the Bot category on the Discord bot page.
  */ 
 require('dotenv').config();
 const { Client, Intents } = require("discord.js");
@@ -44,7 +46,7 @@ client.on('message', message => {
                         message.channel.send('Kicking all members without a role...');
                         purgeNoRole(message);
                     } else {
-                        message.reply('Operation canceled.');
+                        message.channel.send('Operation canceled.');
                     } 
                 }).catch(() => {
                     message.channel.send('No reaction after 15 seconds, operation canceled');
@@ -58,19 +60,19 @@ function purgeNoRole(message){
     console.log("PURGING");
     message.guild.members.fetch()
     .then(members=>{
-        let i = 0;
-        members.each(async member=>{
+        const promises = [];
+        members.each(member=>{
             if(member.roles.cache.size < 2){
-               member.kick("Member has no roles. Authentication has not been completed.")
-                .catch(() => {
-                    console.error;
-                });
-                i++;
+                promises.push(member.kick("Member has no roles. Authentication has not been completed."));
             }
         })
-        .then(r=>{
-            message.channel.send(`Kicked ${i} members.`);
-            console.log(`Kicked ${i} members.`);
+        Promise.all(promises)
+        .catch(() => {
+            console.error;
+        })
+        .then(results=>{
+            message.channel.send(`Kicked ${results.length} members.`);
+            console.log(`Kicked ${results.length} members.`);
         });
     })
     .catch(console.error);
