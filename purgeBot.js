@@ -23,10 +23,14 @@ client.on('message', message => {
     //Moderator only commands:
     if (message.member.hasPermission("ADMINISTRATOR") || message.member.roles.cache.find(r => r.name === "Moderator")) {
         if(message.content.toLowerCase() === "%countpurge"){
-            countPurge(message);
+            countRoles(message);
             return;
         } else if (message.content.toLowerCase() === "%countonlyusers" || message.content.toLowerCase() === "%countusers"){
-            countPurge(message, 3);
+            countRoles(message, 2);
+            return;
+        } else if (message.content.toLowerCase() === "%countlessthan" || message.content.toLowerCase().startsWith("%countroles")){
+            let numRoles = parseInt(message.content.split(' ')[1]);
+            countRoles(message, numRoles);
             return;
         }
     }
@@ -64,7 +68,9 @@ function purgeNoRole(message){
         const promises = [];
         members.each(member=>{
             if(member.roles.cache.size < 2){
-                promises.push(member.kick("Member has no roles. Authentication has not been completed."));
+                setTimout(()=>{
+                    promises.push(member.kick("Member has no roles. Authentication has not been completed."));
+                }, 1000);
             }
         })
         Promise.all(promises)
@@ -79,18 +85,18 @@ function purgeNoRole(message){
     .catch(console.error);
 }
 
-function countPurge(message, lessThanRoles = 2){
-    console.log(`COUNTING MEMBERS WITH LESS THAN ${lessThanRoles-1} ROLE(S)`);
+function countRoles(message, lessThanRoles = 1){
+    console.log(`COUNTING MEMBERS WITH LESS THAN ${lessThanRoles} ROLE(S)`);
     message.guild.members.fetch()
     .then(members=>{
         let i = 0;
         members.each(member=>{
-            if(member.roles.cache.size < lessThanRoles){
+            if(member.roles.cache.size < (lessThanRoles+1)){
                 i++;
             }
         });
-        console.log(`There are ${i} members with less than ${lessThanRoles-1} role(s).`);
-        message.channel.send(`There are ${i} members with less than ${lessThanRoles-1} role(s).`);
+        console.log(`There are ${i} members with less than ${lessThanRoles} role(s).`);
+        message.channel.send(`There are ${i} members with less than ${lessThanRoles} role(s).`);
     });
 }
 
