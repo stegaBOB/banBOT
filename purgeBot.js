@@ -28,7 +28,7 @@ client.on('message', message => {
         } else if (message.content.toLowerCase() === "%countonlyusers" || message.content.toLowerCase() === "%countusers"){
             countRoles(message, 2);
             return;
-        } else if (message.content.toLowerCase() === "%countlessthan" || message.content.toLowerCase().startsWith("%countroles")){
+        } else if (message.content.toLowerCase().startsWith("%countlessthan") || message.content.toLowerCase().startsWith("%countroles")){
             let numRoles = parseInt(message.content.split(' ')[1]);
             countRoles(message, numRoles);
             return;
