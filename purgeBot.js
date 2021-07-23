@@ -18,15 +18,16 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    if(!message.guild) return;
+    if(!message.guild || message.member === null) return;
 
     //Moderator only commands:
-
     if (message.member.hasPermission("ADMINISTRATOR") || message.member.roles.cache.find(r => r.name === "Moderator")) {
         if(message.content.toLowerCase() === "%countpurge"){
             countPurge(message);
+            return;
         } else if (message.content.toLowerCase() === "%countonlyusers" || message.content.toLowerCase() === "%countusers"){
             countPurge(message, 3);
+            return;
         }
     }
 
@@ -79,7 +80,7 @@ function purgeNoRole(message){
 }
 
 function countPurge(message, lessThanRoles = 2){
-    console.log(`COUNTING MEMBERS WITH LESS THAN ${lessThanRoles} ROLE(S)`);
+    console.log(`COUNTING MEMBERS WITH LESS THAN ${lessThanRoles-1} ROLE(S)`);
     message.guild.members.fetch()
     .then(members=>{
         let i = 0;
