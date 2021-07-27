@@ -32,32 +32,7 @@ client.on('message', message => {
             let numRoles = parseInt(message.content.split(' ')[1]);
             countRoles(message, numRoles);
             return;
-        }
-    }
-
-
-    //Admin only commands:
-
-    if(message.member.hasPermission("ADMINISTRATOR") || message.member.roles.cache.find(r => r.name === "Moderator")){
-        if(message.content.toLowerCase() === "%purgenorole"){
-            message.reply("Are you sure you want to kick all members without a role?\n"+
-            "Confirm with a thumb up or deny with a thumb down.")
-            .then(m => {
-                m.react('\U0001f44d').then(r => {
-                m.react('\U0001f44e');});
-                m.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '\U0001f44d' || reaction.emoji.name == '\U0001f44e'),
-                { max: 1, time: 15000 }).then(collected => {
-                    if (collected.first().emoji.name == '\U0001f44d') {
-                        message.channel.send('Kicking all members without a role...');
-                        purgeNoRole(message);
-                    } else {
-                        message.channel.send('Operation canceled.');
-                    } 
-                }).catch(() => {
-                    message.channel.send('No reaction after 15 seconds, operation canceled');
-                });
-            });
-        } else if(message.content.toLowerCase().startsWith("%testpurge")){
+        } else if (message.content.toLowerCase().startsWith("%testpurge")){
 	    let numRoles = parseInt(message.content.split(' ')[1]);
             message.reply("Are you sure you want to test some stuff? Why am I asking?\n"+
             "Confirm with a thumb up or deny with a thumb down.")
@@ -69,6 +44,32 @@ client.on('message', message => {
                     if (collected.first().emoji.name == '\U0001f44d') {
                         message.channel.send('Testing some stuff...');
                         testPurge(message, numRoles);
+                    } else {
+                        message.channel.send('Operation canceled.');
+                    } 
+                }).catch(() => {
+                    message.channel.send('No reaction after 15 seconds, operation canceled');
+                });
+            });
+	
+        }
+    }
+
+
+    //Admin only commands:
+
+    if(message.member.hasPermission("ADMINISTRATOR")){
+        if(message.content.toLowerCase() === "%purgenorole"){
+            message.reply("Are you sure you want to kick all members without a role?\n"+
+            "Confirm with a thumb up or deny with a thumb down.")
+            .then(m => {
+                m.react('\U0001f44d').then(r => {
+                m.react('\U0001f44e');});
+                m.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '\U0001f44d' || reaction.emoji.name == '\U0001f44e'),
+                { max: 1, time: 15000 }).then(collected => {
+                    if (collected.first().emoji.name == '\U0001f44d') {
+                        message.channel.send('Kicking all members without a role...');
+                        purgeNoRole(message);
                     } else {
                         message.channel.send('Operation canceled.');
                     } 
