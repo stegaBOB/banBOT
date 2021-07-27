@@ -37,21 +37,26 @@ client.on('message', message => {
             message.reply("Are you sure you want to test some stuff? Why am I asking?\n"+
             "Confirm with a thumb up or deny with a thumb down.")
             .then(m => {
-                m.react('\U0001f44d').then(r => {
-                m.react('\U0001f44e');});
-                m.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '\U0001f44d' || reaction.emoji.name == '\U0001f44e'),
-                { max: 1, time: 15000 }).then(collected => {
-                    if (collected.first().emoji.name == '\U0001f44d') {
+                m.react('👍').then(r => {
+                m.react('👎');});
+                m.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
+                { max: 1, time: 15000 })
+		.then(collected => {
+                    if (collected.first().emoji.name == '👍') {
                         message.channel.send('Testing some stuff...');
                         testPurge(message, numRoles);
                     } else {
                         message.channel.send('Operation canceled.');
                     } 
-                }).catch(() => {
+                })
+		.catch(() => {
                     message.channel.send('No reaction after 15 seconds, operation canceled');
                 });
-            });
-	
+            })
+	    .catch(err => {
+		console.err(err);
+		message.channel.send("Uh oh...");
+	    });
         }
     }
 
@@ -63,20 +68,26 @@ client.on('message', message => {
             message.reply("Are you sure you want to kick all members without a role?\n"+
             "Confirm with a thumb up or deny with a thumb down.")
             .then(m => {
-                m.react('\U0001f44d').then(r => {
-                m.react('\U0001f44e');});
-                m.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '\U0001f44d' || reaction.emoji.name == '\U0001f44e'),
-                { max: 1, time: 15000 }).then(collected => {
-                    if (collected.first().emoji.name == '\U0001f44d') {
+                m.react('👍').then(r => {
+                m.react('👎');});
+                m.awaitReactions((reaction, user) => user.id == message.author.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎'),
+                { max: 1, time: 15000 })
+		.then(collected => {
+                    if (collected.first().emoji.name == '👍') {
                         message.channel.send('Kicking all members without a role...');
                         purgeNoRole(message);
                     } else {
                         message.channel.send('Operation canceled.');
                     } 
-                }).catch(() => {
+                })
+		.catch(() => {
                     message.channel.send('No reaction after 15 seconds, operation canceled');
                 });
-            });
+            })
+	    .catch(err => {
+		console.err(err);
+		message.channel.send("Uh oh...");
+	    });
         }
     }
 });
@@ -86,59 +97,59 @@ function purgeNoRole(message){
     message.guild.members.fetch()
     .then(members => {
         const promises = [];
-	    let i = 0;
+	let i = 0;
         members.each(member => {
-            if(member.roles.cache.size < 2){
-		        i++;
+	    if(member.roles.cache.size < 2){
+		i++;
                 promises.push(member.kick("Member has no roles. Authentication has not been completed."));
             }
         });
         Promise.all(promises)
         .then(results => {
             console.log(`promises.length = ${promises.length}`);
-	        console.log(`i = ${i}`);
+	    console.log(`i = ${i}`);
             message.channel.send(`Kicked ${promises.length} members.`);
             console.log(`Kicked ${promises.length} members.`);
         })
-	    .catch(err => {
+	.catch(err => {
             console.error(err);
-	        message.reply("I think there was an error kicking members. Blame Bob's poor coding.");
+	    message.reply("I think there was an error kicking members. Blame Bob's poor coding.");
         });
     })
     .catch(err => {
-	    console.error(err);
-	    message.reply("I think there was an error fetching members. Blame Bob's poor coding.");
+	console.error(err);
+	message.reply("I think there was an error fetching members. Blame Bob's poor coding.");
     });
 }
 
-function testPurge(message, numRoles){
+function testPurge(message, numRoles = 2){
     console.log("TEST PURGING");
     message.guild.members.fetch()
     .then(members => {
         const promises = [];
-	    let i = 0;
+	let i = 0;
         members.each(member => {
-            if(member.roles.cache.size < numRoles){
-		        i++;
-		        promises.push(member.fetch());
+	    if(member.roles.cache.size < numRoles){
+		i++;
+		promises.push(member.fetch());
             }
         });
         Promise.all(promises)
         .then(results=>{
-	        console.log(results);
+	    console.log(results);
             console.log(`promises.length = ${promises.length}`);
-	        console.log(`i = ${i}`);
+	    console.log(`i = ${i}`);
             message.channel.send(`Successfully counted ${promises.length} members.`);
             console.log(`Successfully counted ${promises.length} members.`);
         })
-	    .catch(err => {
+	.catch(err => {
             console.error(err);
-	        message.reply("I think there was an error counting members. Blame Bob's poor coding.");
+	    message.reply("I think there was an error counting members. Blame Bob's poor coding.");
         });
     })
     .catch(err => {
-	    console.error(err);
-	    message.reply("I think there was an error fetching members. Blame Bob's poor coding.");
+	console.error(err);
+	message.reply("I think there was an error fetching members. Blame Bob's poor coding.");
     });
 }
 
@@ -149,12 +160,16 @@ function countRoles(message, lessThanRoles = 1){
     .then(members=>{
         let i = 0;
         members.each(member=>{
-            if(member.roles.cache.size < (lessThanRoles+1)){
+	    if(member.roles.cache.size < (lessThanRoles+1)){
                 i++;
             }
         });
         console.log(`There are ${i} members with less than ${lessThanRoles} role(s).`);
         message.channel.send(`There are ${i} members with less than ${lessThanRoles} role(s).`);
+    })
+    .catch(err => {
+	console.err(err);
+	message.channel.send("Uh oh...");
     });
 }
 
