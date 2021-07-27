@@ -33,7 +33,7 @@ client.on('message', message => {
             countRoles(message, numRoles);
             return;
         } else if (message.content.toLowerCase().startsWith("%testpurge")){
-	    let numRoles = parseInt(message.content.split(' ')[1]);
+	    let numRoles = parseInt(message.content.split(' '))[1];
             message.reply("Are you sure you want to test some stuff? Why am I asking?\n"+
             "Confirm with a thumb up or deny with a thumb down.")
             .then(m => {
@@ -122,7 +122,8 @@ function purgeNoRole(message){
     });
 }
 
-function testPurge(message, numRoles = 2){
+function testPurge(message, numRoles){
+    if(numRoles === null) numRoles = 2;
     console.log("TEST PURGING");
     message.guild.members.fetch()
     .then(members => {
