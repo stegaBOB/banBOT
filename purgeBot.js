@@ -64,7 +64,7 @@ client.on('message', message => {
 
     //Admin only commands:
 
-    if (message.member.hasPermission("ADMINISTRATOR") || message.member.roles.cache.find(r => r.name === "Moderator")) {
+    if (message.member.hasPermission("ADMINISTRATOR")) {
         if (message.content.toLowerCase() === "%purgenorole") {
             message.reply("Are you sure you want to kick all members without a role?\n" +
                 "Confirm with a thumb up or deny with a thumb down.")
@@ -97,7 +97,7 @@ client.on('message', message => {
                 return;
             } else {
                 let theName = theMessage[1];
-                if (theName.length() < 3) {
+                if (theName.length < 3) {
                     message.channel.send('I think you typed incorrectly. Try again with a username longer than 3 characters. Operation canceled.\nExample: `%banstartswith EonCharge`');
                     return;
                 } else {
@@ -148,6 +148,10 @@ function banStartWithCheck(message, name) {
                     banList.push(member);
                 }
             });
+            if(banList.length < 1){
+                message.channel.send(`I couldn't find any members whose name starts with ${name}. Please try again later.`);
+                return;
+            }
             message.reply(`Are you sure you want to ban all ${banList.length} members whose name starts with ${name}?\n` +
                 "Confirm with a thumb up or deny with a thumb down.")
                 .then(m => {
@@ -164,7 +168,8 @@ function banStartWithCheck(message, name) {
                                 message.channel.send('Operation canceled.');
                             }
                         })
-                        .catch(() => {
+                        .catch((err) => {
+                            console.log(err);
                             message.channel.send('No reaction after 15 seconds, operation canceled');
                         });
                 })
@@ -181,7 +186,8 @@ function banStartWithCheck(message, name) {
 
 
 function banStartsWith(message, name, banList){
-    if (name.length() < 3) {
+    console.log("hi");
+    if (name.length < 3) {
         message.channel.send("Uh oh. This shouldn't be possible. REEEEEEEEEEE");
         return;
     } else {
@@ -240,6 +246,7 @@ function testPurge(message, numRoles) {
 
 function countRoles(message, lessThanRoles = 1) {
     console.log(`COUNTING MEMBERS WITH LESS THAN ${lessThanRoles} ROLE(S)`);
+    message.channel.send(`Counting members with less than ${lessThanRoles} roles...`);
     message.guild.members.fetch()
         .then(members => {
             let i = 0;
