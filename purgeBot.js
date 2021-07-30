@@ -58,14 +58,7 @@ client.on('message', message => {
                     console.err(err);
                     message.channel.send("Uh oh...");
                 });
-        }
-    }
-
-
-    //Admin only commands:
-
-    if (message.member.hasPermission("ADMINISTRATOR")) {
-        if (message.content.toLowerCase() === "%purgenorole") {
+        } else if (message.content.toLowerCase() === "%purgenorole") {
             message.reply("Are you sure you want to kick all members without a role?\n" +
                 "Confirm with a thumb up or deny with a thumb down.")
                 .then(m => {
@@ -106,6 +99,13 @@ client.on('message', message => {
                 }
             }
         }
+    }
+
+
+    //Admin only commands:
+
+    if (message.member.hasPermission("ADMINISTRATOR")) {
+        
     }
 });
 
