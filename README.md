@@ -2,6 +2,8 @@
 
 This bot has a singular goal: to PURGE all members without a role. 
 
+Aaaaaand it has a few more tricks up its sleeves too. 
+
 ## Commands:
 
 - `%purgenorole`: Kicks all members from the server that don't have a role. (Moderator or Administrator Only)
