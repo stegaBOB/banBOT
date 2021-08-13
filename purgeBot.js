@@ -21,6 +21,20 @@ client.on('ready', () => {
 client.on('message', message => {
     if (!message.guild || message.member === null) return;
 
+    if (message.content.toLowerCase().includes("pog")){
+        message.react("<:pog:599513814328672266>")
+            // .then(m => {
+            //     message.channel.send("<:pog:599513814328672266>")
+            //         .then(m2 => {
+            //             console.log(m2)
+            //             m2.delete({ timeout: 500 });
+            //         })
+            // })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     //Moderator only commands:
     if (message.member.hasPermission("ADMINISTRATOR") || message.member.roles.cache.find(r => r.name === "Moderator")) {
         if (message.content.toLowerCase().startsWith("%countlessthan")) {
