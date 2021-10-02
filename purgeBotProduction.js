@@ -16,9 +16,79 @@ const client = new Client({
 });
 client.once('ready', () => {
     console.log("I am ready!");
-    const openChannel = schedule.scheduleJob('*/5 * * * * *', openNFTChannel);
-    const closeChannel = schedule.scheduleJob('*/5 * * * *', closeNFTChannel);
+    openNFTChannel();
+    setTimeout(closeNFTChannel, 10000);
+    // const openChannel = schedule.scheduleJob('15 3,15 * * *', openNFTChannel);
+    // const closeChannel = schedule.scheduleJob('15 4,16 * * *', closeNFTChannel);
 });
+
+
+const LEVEL_5_ID = '881562890006581288';
+const BOOSTER_ROLE_ID = '837465543954006017';
+const COLLABORATION_ROLE_ID = '883743556613853184';
+
+const GROW_CHANNEL_ID = '888802443150897172';
+const TEST_CHANNEL_ID = '885752581639507988';
+
+const CLOSE_MESSAGE = 'TestClose';
+//     `Alright guys! This channel is now closed and will be reopened in 11 hrs from the time of this message!
+
+// Remember to look back and follow each other!
+// <@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}>!
+
+// See you in 11 hours!
+
+// ❤️ Good luck! ❤️`;
+
+const OPEN_MESSAGE = 'TestOpen'
+//     `This channel is now open for <@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}> and will close in 1 hour!
+// Go follow back each other and do not cheat! 🥳
+
+// ❤️ Let's Grow Together! ❤️`;
+
+async function openNFTChannel() {
+    const NFT_GUILD = await client.guilds.fetch(NFT_SERVER_ID)
+        .catch(err => console.log('Error fetching NFT guild - ', err));
+    const THE_CHANNEL = await NFT_GUILD.channels.fetch(TEST_CHANNEL_ID)
+        .catch(err => console.log('Error fetching Test Channel - ', err));
+    try {
+        await THE_CHANNEL.permissionOverwrites.edit(COLLABORATION_ROLE_ID, {
+            SEND_MESSAGES: true
+        })
+        await THE_CHANNEL.permissionOverwrites.edit(LEVEL_5_ID, {
+            SEND_MESSAGES: true
+        })
+        await THE_CHANNEL.permissionOverwrites.edit(BOOSTER_ROLE_ID, {
+            SEND_MESSAGES: true
+        })
+    } catch (err) {
+        console.log('Error changing channel perms - ', err);
+    }
+    // TEST_CHANNEL.send(OPEN_MESSAGE)
+    //     .catch(err => console.log('Error sending open message - ', err));
+}
+
+async function closeNFTChannel() {
+    const NFT_GUILD = await client.guilds.fetch(NFT_SERVER_ID)
+        .catch(err => console.log('Error fetching NFT guild - ', err));
+    const THE_CHANNEL = await NFT_GUILD.channels.fetch(TEST_CHANNEL_ID)
+        .catch(err => console.log('Error fetching Test Channel - ', err));
+    try {
+        await THE_CHANNEL.permissionOverwrites.edit(COLLABORATION_ROLE_ID, {
+            SEND_MESSAGES: false
+        })
+        await THE_CHANNEL.permissionOverwrites.edit(LEVEL_5_ID, {
+            SEND_MESSAGES: false
+        })
+        await THE_CHANNEL.permissionOverwrites.edit(BOOSTER_ROLE_ID, {
+            SEND_MESSAGES: false
+        })
+    } catch (err) {
+        console.log('Error changing channel perms - ', err);
+    }
+    // TEST_CHANNEL.send(CLOSE_MESSAGE)
+    //     .catch(err => console.log('Error sending close message - ', err));
+}
 
 
 const NFT_MOD_ROLE_ID = "826028582739640354";
@@ -98,21 +168,8 @@ client.on('guildMemberAdd', async member => {
     }
 });
 
-// const banStartsWithObj = {
-//     messageObj: {
-//         cantFindEmbed: `I couldn't find any members whose name starts with **${parameterObj.name}**. Please try again later.`,
-//         confirmReplyEmbedNormal: `Are you sure you want to ban all **${matchList.length}** members whose name starts with **${parameterObj.name}**?\n` +
-//             "Confirm with a thumb up or deny with a thumb down.",
-//         confirmReplyEmbedLong: `**Thats a lot of people!** \nAre you ***REALLLY*** sure you want to ban all **${matchList.length}** members whose name starts with **${parameterObj.name}**?\n` +
-//             "Confirm with a thumb up or deny with a thumb down.",
-//     },
-// }
-
-
 client.on('messageCreate', async message => {
     if (!message.guild || message.member === null) return;
-    //Moderator only commands:
-
     if (message.member.permissions.has("ADMINISTRATOR") || message.member.roles.cache.find(r => r.name === "Moderator") || message.member.roles.cache.find(r => r.id === NFT_MOD_ROLE_ID)
         || message.member.roles.cache.find(r => r.id === NFT_JUNIOR_MOD_ID) || message.member.roles.cache.find(r => r.id === NFT_SENIOR_MOD_ID)) {
         let author = message.author;
@@ -202,44 +259,6 @@ client.on('messageCreate', async message => {
 
 });
 
-const LEVEL_5_ID = '881562890006581288';
-const BOOSTER_ROLE_ID = '837465543954006017';
-const COLLABORATION_ROLE_ID = '883743556613853184';
-
-const GROW_CHANNEL_ID = '888802443150897172';
-const TEST_CHANNEL_ID = '885752581639507988';
-
-const CLOSE_MESSAGE = `Alright guys! This channel is now closed and will be reopened in 11 hrs from the time of this message!\n\n
-Remember to look back and follow each other!\n
-<@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}>!\n
-See you in 11 hours!\n
-❤️ Good luck! ❤️`;
-
-const OPEN_MESSAGE = `This channel is now open for <@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}> and will close in 1 hour!\n
-Go follow back each other and do not cheat! 🥳\n\n
-❤️ Let's Grow Together! ❤️`;
-
-// const openChannel = schedule.scheduleJob('* * * * * *', openNFTChannel);
-// const closeChannel = schedule.scheduleJob('15 4,16 * * *', closeNFTChannel());
-
-async function openNFTChannel() {
-    const NFT_GUILD = await client.guilds.fetch(NFT_SERVER_ID)
-        .catch(err => console.log('Error fetching NFT guild - ', err));
-    const TEST_CHANNEL = await NFT_GUILD.channels.fetch(TEST_CHANNEL_ID)
-        .catch(err => console.log('Error fetching Test Channel - ', err));
-    TEST_CHANNEL.send(OPEN_MESSAGE)
-        .catch(err => console.log('Error sending open message - ', err));
-
-}
-
-async function closeNFTChannel() {
-    const NFT_GUILD = await client.guilds.fetch(NFT_SERVER_ID)
-        .catch(err => console.log('Error fetching NFT guild - ', err));
-    const TEST_CHANNEL = await NFT_GUILD.channels.fetch(TEST_CHANNEL_ID)
-        .catch(err => console.log('Error fetching Test Channel - ', err));
-    TEST_CHANNEL.send(CLOSE_MESSAGE)
-        .catch(err => console.log('Error sending close message - ', err));
-}
 
 
 async function addBlobRole(guild) {
@@ -262,53 +281,6 @@ async function addBlobRole(guild) {
             })
     }
 }
-
-
-
-// async function queryCheckFunction(waitEmbed, checkFunction, doFunction, messageObj, parameterObj) {
-//     let theGuild = waitEmbed.guild;
-//     let members = await theGuild.members.fetch()
-//         .catch(err => console.error('Trying to fetch members - ', err));
-//     let matchList = [];
-//     members.each((member) => {
-//         checkFunction(member, matchList, parameterObj);
-//     });
-
-//     if (matchList.length < 1) {
-//         const cantFindEmbed = embedFactory('red', messageObj.cantFindEmbed)
-//         await waitEmbed.edit({ embeds: [cantFindEmbed] })
-//             .catch(() => console.error('Trying to send can\'t find embed - ', err));
-//         return;
-//     }
-//     const confirmReplyEmbedNormal = embedFactory('blue', messageObj.confirmReplyEmbedNormal);
-
-//     const confirmReplyEmbedLong = embedFactory('orange', messageObj.confirmReplyEmbedLong);
-
-//     await waitEmbed.edit({ embeds: [(matchList.length) < 100 ? confirmReplyEmbedNormal : confirmReplyEmbedLong] })
-//         .catch(() => console.error('Trying to send confirm reply embed - ', err));
-//     await waitEmbed.react('👍')
-//         .catch(() => console.error('Trying to react with thumbs up - ', err));
-//     await waitEmbed.react('👎')
-//         .catch(() => console.error('Trying to react with thumbs down - ', err));
-
-//     const filter = (reaction, user) => user.id === author.id && (reaction.emoji.name == '👍' || reaction.emoji.name == '👎');
-//     const collector = waitEmbed.createReactionCollector({ filter, max: 1, time: 15000 });
-//     collector.on('end', async collected => {
-//         console.log(`Collected ${collected.size} items`)
-//         const cancelEmbed = embedFactory('red', 'Operation canceled.');
-//         if (collected.size === 0 || collected.first().emoji.name !== '👍') {
-//             await waitEmbed.edit({ embeds: [cancelEmbed] })
-//                 .catch(() => console.error('Trying to send cancel embed - ', err));
-//             await waitEmbed.reactions.removeAll()
-//                 .catch(() => console.error('Trying to remove reactions - ', err));
-//         } else if (collected.first().emoji.name == '👍') {
-//             await waitEmbed.reactions.removeAll()
-//                 .catch(() => console.error('Trying to remove reactions - ', err));
-//             doFunction(waitEmbed, matchList, parameterObj)
-//         }
-//     });
-
-// }
 
 async function banStartWithCheck(waitEmbed, name, author) {
     let theGuild = waitEmbed.guild;
@@ -394,30 +366,9 @@ async function banStartsWith(waitEmbed, name, banList) {
                 console.error(err.message, `: when trying to ban ${banList[i - 1].user.tag}`);
                 if (err instanceof DiscordAPIError) {
                     console.log(`Error code: ${err.code}`);
-                    // if (err.code === 50013) {
-                    //     const permissionEmbed = embedFactory('red', `Sorry, I don't have the permissions to ban **${banList[i-1].user.tag}**.`);
-                    //     await theChannel.send({ embeds: [permissionEmbed] }).catch(err => {
-                    //         console.error('Trying to send permissionEmbed - ', err);
-                    //     });
-                    // } else if (err.code === 10013) {
-                    //     const permissionEmbed = embedFactory('red', `.`);
-                    //     await theChannel.send({ embeds: [permissionEmbed] }).catch(err => {
-                    //         console.error('Trying to send permissionEmbed - ', err);
-                    //     });
-                    // }
-                    // else {
-                    //     const apiErrorEmbed = embedFactory('red', `I ran into an DiscordAPIError when trying to ban **${banList[i-1].user.tag}**.\n*Error: ${err.message}.*`);
-                    //     await theChannel.send({ embeds: [apiErrorEmbed] }).catch(err => {
-                    //         console.error('Trying to send apiErrorEmbed - ', err);
-                    //     });
-                    // }
                 }
                 else {
                     console.log('Error: ', err);
-                    // const otherErrorEmbed = embedFactory('red', `Sorry, I ran into an error trying to ban **${banList[i-1].user.tag}**.`);
-                    // await theChannel.send({ embeds: [otherErrorEmbed] }).catch(err => {
-                    //     console.error('Trying to send otherErrorEmbed - ', err);
-                    // });
                 }
             }
         }
@@ -562,7 +513,6 @@ async function purgePendingCheck(waitEmbed, author) {
     for (const member of purgeList) {
         tagList.push(member.user.tag);
     }
-    // console.log('purgeList tags: ', tagList.toString());
     if (purgeList.length < 1) {
         const cantFindEmbed = embedFactory('red', `I couldn't find any members who don't have a roles. Please try again later.`);
         await waitEmbed.edit({ embeds: [cantFindEmbed] })
@@ -600,11 +550,7 @@ async function purgePendingCheck(waitEmbed, author) {
 async function purgePending(waitEmbed, purgeList) {
     let theGuild = waitEmbed.guild;
     let theChannel = waitEmbed.channel;
-    // let tagList = [];
-    // for (const member of purgeList) {
-    //     tagList.push(member.user.tag);
-    // }
-    // console.log('purgeList tags: ', tagList.toString());
+
     let purgeCount = 0;
     let errorCount = 0;
     await waitEmbed.edit({
@@ -672,12 +618,5 @@ function embedFactory(color, description) {
         description: description,
     };
 }
-
-// function similarTimestamps(controlTS, offsetSeconds, other){
-//     let otherTS = other>>>22;
-//     if (
-//         Math.abs(controlTS-otherTS) <= (offsetSeconds*1000)
-//     )
-// }
 
 client.login(process.env.BOT_TOKEN);
