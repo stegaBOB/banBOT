@@ -16,10 +16,8 @@ const client = new Client({
 });
 client.once('ready', () => {
     console.log("I am ready!");
-    openNFTChannel();
-    setTimeout(closeNFTChannel, 10000);
-    // const openChannel = schedule.scheduleJob('15 3,15 * * *', openNFTChannel);
-    // const closeChannel = schedule.scheduleJob('15 4,16 * * *', closeNFTChannel);
+    const openChannel = schedule.scheduleJob('15 3,15 * * *', openNFTChannel);
+    const closeChannel = schedule.scheduleJob('15 4,16 * * *', closeNFTChannel);
 });
 
 
