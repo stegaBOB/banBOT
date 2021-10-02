@@ -16,8 +16,8 @@ const client = new Client({
 });
 client.once('ready', () => {
     console.log("I am ready!");
-    const openChannel = schedule.scheduleJob('15 3,15 * * *', openNFTChannel);
-    const closeChannel = schedule.scheduleJob('15 4,16 * * *', closeNFTChannel);
+    const openChannel = schedule.scheduleJob('15 3,15 * * *', openGrowChannel);
+    const closeChannel = schedule.scheduleJob('15 4,16 * * *', closeGrowChannel);
 });
 
 
@@ -28,26 +28,27 @@ const COLLABORATION_ROLE_ID = '883743556613853184';
 const GROW_CHANNEL_ID = '888802443150897172';
 const TEST_CHANNEL_ID = '885752581639507988';
 
-const CLOSE_MESSAGE = 'TestClose';
-//     `Alright guys! This channel is now closed and will be reopened in 11 hrs from the time of this message!
+const CLOSE_MESSAGE = 
+`Alright guys! This channel is now closed and will be reopened in 11 hrs from the time of this message!
 
-// Remember to look back and follow each other!
-// <@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}>!
+Remember to look back and follow each other!
+<@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}>!
 
-// See you in 11 hours!
+See you in 11 hours!
 
-// ❤️ Good luck! ❤️`;
+❤️ Good luck! ❤️`;
 
-const OPEN_MESSAGE = 'TestOpen'
-//     `This channel is now open for <@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}> and will close in 1 hour!
-// Go follow back each other and do not cheat! 🥳
+const OPEN_MESSAGE = 
+`This channel is now open for <@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}> and will close in 1 hour!
+Go follow back each other and do not cheat! 🥳
 
-// ❤️ Let's Grow Together! ❤️`;
+❤️ Let's Grow Together! ❤️`;
 
-async function openNFTChannel() {
+async function openGrowChannel() {
+    console.log('Opening Grow Together Channel!');
     const NFT_GUILD = await client.guilds.fetch(NFT_SERVER_ID)
         .catch(err => console.log('Error fetching NFT guild - ', err));
-    const THE_CHANNEL = await NFT_GUILD.channels.fetch(TEST_CHANNEL_ID)
+    const THE_CHANNEL = await NFT_GUILD.channels.fetch(GROW_CHANNEL_ID)
         .catch(err => console.log('Error fetching Test Channel - ', err));
     try {
         await THE_CHANNEL.permissionOverwrites.edit(COLLABORATION_ROLE_ID, {
@@ -62,14 +63,15 @@ async function openNFTChannel() {
     } catch (err) {
         console.log('Error changing channel perms - ', err);
     }
-    // TEST_CHANNEL.send(OPEN_MESSAGE)
-    //     .catch(err => console.log('Error sending open message - ', err));
+    TEST_CHANNEL.send(OPEN_MESSAGE)
+        .catch(err => console.log('Error sending open message - ', err));
 }
 
-async function closeNFTChannel() {
+async function closeGrowChannel() {
+    console.log('Closing Grow Together Channel!');
     const NFT_GUILD = await client.guilds.fetch(NFT_SERVER_ID)
         .catch(err => console.log('Error fetching NFT guild - ', err));
-    const THE_CHANNEL = await NFT_GUILD.channels.fetch(TEST_CHANNEL_ID)
+    const THE_CHANNEL = await NFT_GUILD.channels.fetch(GROW_CHANNEL_ID)
         .catch(err => console.log('Error fetching Test Channel - ', err));
     try {
         await THE_CHANNEL.permissionOverwrites.edit(COLLABORATION_ROLE_ID, {
@@ -84,8 +86,8 @@ async function closeNFTChannel() {
     } catch (err) {
         console.log('Error changing channel perms - ', err);
     }
-    // TEST_CHANNEL.send(CLOSE_MESSAGE)
-    //     .catch(err => console.log('Error sending close message - ', err));
+    TEST_CHANNEL.send(CLOSE_MESSAGE)
+        .catch(err => console.log('Error sending close message - ', err));
 }
 
 
