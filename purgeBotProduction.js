@@ -63,7 +63,7 @@ async function openGrowChannel() {
     } catch (err) {
         console.log('Error changing channel perms - ', err);
     }
-    TEST_CHANNEL.send(OPEN_MESSAGE)
+    THE_CHANNEL.send(OPEN_MESSAGE)
         .catch(err => console.log('Error sending open message - ', err));
 }
 
@@ -86,7 +86,7 @@ async function closeGrowChannel() {
     } catch (err) {
         console.log('Error changing channel perms - ', err);
     }
-    TEST_CHANNEL.send(CLOSE_MESSAGE)
+    THE_CHANNEL.send(CLOSE_MESSAGE)
         .catch(err => console.log('Error sending close message - ', err));
 }
 
