@@ -112,9 +112,9 @@ const MOD_NAMES_SET = new Set(MOD_NAMES.toString().toLowerCase().split(','));
 const RCC_MOD_CHANNEL_ID = "805552066553577563";
 const NFT_MOD_CHANNEL_ID = "829798424215420929";
 
-const NFT_MOD_IDS = ["814467375952953344", "292670233972310019", "194751257305415680", "260340001110228994", "387054136484560896", "316505478735593472", "365668214601940992"];
+const NFT_MOD_IDS = ["814467375952953344", "292670233972310019", "194751257305415680", "260340001110228994", "387054136484560896", "316505478735593472", "365668214601940992", '324551869701554186', '458930155709267968', '823972375535812680'];
 const NFT_MOD_IDS_SET = new Set(NFT_MOD_IDS);
-const NFT_MOD_NAMES = ["watanuki🧬", "watanuki", "goblinmessiah", "palpable", "prealle", "colletteisabear", "mtimetraveller", "anjuthemage", ".time traveller."];
+const NFT_MOD_NAMES = ["watanuki🧬", "watanuki", "goblinmessiah", "palpable", "prealle", "colletteisabear", "mtimetraveller", "anjuthemage", ".time traveller.", 'Citystates', 'sgtslaughter', 'torchhorse'];
 const NFT_MOD_NAMES_SET = new Set(NFT_MOD_NAMES.toString().toLowerCase().split(','));
 
 
