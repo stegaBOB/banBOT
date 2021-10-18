@@ -32,7 +32,6 @@ const CLOSE_MESSAGE =
 `Alright guys! This channel is now closed and will be reopened in 11 hrs from the time of this message!
 
 Remember to look back and follow each other!
-<@&${COLLABORATION_ROLE_ID}>, <@&${LEVEL_5_ID}>, and <@&${BOOSTER_ROLE_ID}>!
 
 See you in 11 hours!
 
