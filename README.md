@@ -1,6 +1,6 @@
 # purgeBOT
 
-This bot has a singular goal: to PURGE all members without a role. 
+This bot has a singular goal: to PURGE all members without a role. A lot of the code is quite messy. At some point I'll clean it up.
 
 Aaaaaand it has a few more tricks up its sleeves too. 
 
