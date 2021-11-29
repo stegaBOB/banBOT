@@ -1,8 +1,6 @@
 # purgeBOT
 
-This bot has a singular goal: to PURGE all members without a role. A lot of the code is quite messy. At some point I'll clean it up.
-
-Aaaaaand it has a few more tricks up its sleeves too. 
+The bot works... the code looks horrible pls don't judge. 
 
 ## Commands:
 
