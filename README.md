@@ -11,3 +11,4 @@ The bot works... the code looks horrible pls don't judge.
 - `%banstartswith "username"`: Bans all members who's username starts with the `username` provided in the command. (Moderator or Administrator Only)
 
 - `%purgepending`: Kicks all users who have completed the Membership Screening but have yet to complete the captcha. These users will only have the Pending role. (Moderator or Administrator Only)
+   
